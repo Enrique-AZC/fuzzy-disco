@@ -56,6 +56,7 @@
     #prompt-line {
       display: flex;
       align-items: center;
+      margin-top: 10px;
     }
 
     #prompt {
@@ -78,61 +79,13 @@
       background-color: #00ffcc;
       margin-left: 2px;
       animation: blink 1s steps(2, start) infinite;
+      height: 1em;
     }
 
     @keyframes blink {
       to {
         visibility: hidden;
       }
-    }
-
-    .glitch {
-      position: relative;
-      color: #00ffcc;
-      font-size: 1.2em;
-      animation: glitch 2s infinite;
-    }
-
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 0;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .glitch::before {
-      animation: glitchTop 2s infinite;
-      color: #f0f;
-      top: -1px;
-    }
-
-    .glitch::after {
-      animation: glitchBottom 2s infinite;
-      color: #0ff;
-      top: 1px;
-    }
-
-    @keyframes glitch {
-      0% { transform: none; }
-      20% { transform: skew(-0.5deg, 0.5deg); }
-      40% { transform: skew(0.5deg, -0.5deg); }
-      60% { transform: skew(-1deg, 1deg); }
-      80% { transform: skew(1deg, -1deg); }
-      100% { transform: none; }
-    }
-
-    @keyframes glitchTop {
-      0% { clip-path: inset(0 0 90% 0); }
-      50% { clip-path: inset(0 0 10% 0); }
-      100% { clip-path: inset(0 0 90% 0); }
-    }
-
-    @keyframes glitchBottom {
-      0% { clip-path: inset(90% 0 0 0); }
-      50% { clip-path: inset(10% 0 0 0); }
-      100% { clip-path: inset(90% 0 0 0); }
     }
   </style>
 </head>
@@ -145,11 +98,7 @@
   </div>
 
   <div id="terminal">
-    <div class="glitch" data-text="Jorge el Portugués, bienvenido a la terminal chulandrona">
-      Jorge el Portugués, bienvenido a la terminal chulandrona
-    </div>
-    <br>
-    Escribe un comando para comenzar. Escribe "help" para ver las opciones.<br><br>
+    <div id="intro"></div>
   </div>
 
   <div id="input-line">
@@ -169,7 +118,9 @@
         document.getElementById("login").style.display = "none";
         document.getElementById("terminal").style.display = "block";
         document.getElementById("input-line").style.display = "block";
-        document.getElementById("cmdInput").focus();
+        introTyping(() => {
+          document.getElementById("cmdInput").focus();
+        });
       } else {
         alert("Contraseña incorrecta, llamando a Jose María.");
       }
@@ -179,39 +130,35 @@
     const input = document.getElementById("cmdInput");
 
     const commands = {
-      help: `Comandos disponibles:
-  ./start   → Iniciar máquina del tiempo
+      help: `Comandos disponibles (work in progress):
+  ./start   → Iniciar máquina del tiempo (WIP)
   ./razones → Mostrar razones por las que te amo
   ./teamo   → Ver cuánto te amo
   ./fin     → Final simbólico
   clear     → Limpiar pantalla`,
-
       "./start": `Iniciando sentimientos...
 Cargando recuerdos... ██████████ 100%
-Todo listo para viajar a lo que fuimos, somos y seremos.  
-[Accede a nuestra cápsula del tiempo 💌]
-→ https://recuerdos.vercel.app`,
 
+(🔐 Acceso privado al universo de nuestros recuerdos: 
+https://drive.google.com/drive/folders/LOQUESEA_AQUI 
+*requiere que me lo pidas con una sonrisa*)`,
       "./razones": `1. Porque tu risa ilumina todo.
 2. Porque contigo soy yo, sin filtros.
 3. Porque haces que los días normales se sientan mágicos.
 4. Porque te amo sin razón, y con todas las razones del mundo.`,
-
       "./teamo": `Te amo más que a las tazas de café en días lluviosos,
 más que al código que compila a la primera.
 Y eso... es muchísimo. 💻❤️`,
-
       "./fin": `Error: El amor no tiene fin.
 Intentando cerrar sesión...
 Imposible. Sentimientos activos para siempre. 💘`,
-
       clear: "clear"
     };
 
     input.addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
         const cmd = input.value.trim();
-        appendLine("> " + cmd);
+        appendToTerminal("> " + cmd);
         if (commands[cmd]) {
           if (cmd === "clear") {
             terminal.innerHTML = "";
@@ -226,10 +173,8 @@ Imposible. Sentimientos activos para siempre. 💘`,
       }
     });
 
-    function appendLine(text) {
-      const div = document.createElement("div");
-      div.textContent = text;
-      terminal.appendChild(div);
+    function appendToTerminal(text) {
+      terminal.innerHTML += text + "<br><br>";
     }
 
     function typeText(text, callback) {
@@ -241,7 +186,7 @@ Imposible. Sentimientos activos para siempre. 💘`,
         if (i < text.length) {
           line.innerHTML += text.charAt(i);
           i++;
-          setTimeout(typeChar, 15); // velocidad typing
+          setTimeout(typeChar, 15); // velocidad
         } else {
           line.innerHTML += "<br><br>";
           if (callback) callback();
@@ -249,6 +194,22 @@ Imposible. Sentimientos activos para siempre. 💘`,
       }
 
       typeChar();
+    }
+
+    function introTyping(callback) {
+      const introText = `
+ _____  _                                        
+|  __ \\(_)                                       
+| |__) |___   _____ _ __ ___  ___ _ __  ___  ___ 
+|  _  /| \\ \\ / / _ \\ '__/ __|/ _ \\ '_ \\/ __|/ _ \\
+| | \\ \\| |\\ V /  __/ |  \\__ \\  __/ | | \\__ \\  __/
+|_|  \\_\\_| \\_/ \\___|_|  |___/\\___|_| |_|___/\\___|
+
+Jorge el Portugués, bienvenido a la terminal chulandrona.
+Escribe un comando para comenzar. Escribe "help" para ver las opciones.
+`;
+
+      typeText(introText.trim(), callback);
     }
   </script>
 </body>
