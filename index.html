@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Terminal del Amor</title>
+  <title>Terminal del Amor 💻❤️</title>
   <style>
     body {
       background-color: #000;
@@ -11,43 +11,66 @@
       padding: 20px;
       overflow: hidden;
     }
-    #terminal {
-      max-width: 800px;
-      margin: 0 auto;
-      white-space: pre-wrap;
+    #terminal, #input-line {
+      display: none;
     }
-    #input-line {
-      display: flex;
+    #login {
+      margin-top: 20%;
+      text-align: center;
     }
-    #prompt {
-      margin-right: 10px;
-    }
-    input {
-      background: transparent;
-      border: none;
-      outline: none;
+    input[type="password"] {
+      background: #111;
       color: #00ffcc;
+      border: 1px solid #00ffcc;
       font-family: inherit;
-      width: 100%;
+      padding: 10px;
+      font-size: 1em;
     }
-    ::selection {
-      background: #00ffcc;
-      color: #000;
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-size: 1em;
+      background-color: #00ffcc;
+      color: black;
+      border: none;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+  <div id="login">
+    <h2>💖 Ingresa la contraseña secreta</h2>
+    <input type="password" id="pass" placeholder="Escríbela aquí">
+    <br>
+    <button onclick="checkPass()">Entrar</button>
+  </div>
+
   <div id="terminal">
-    Bienvenida a la Terminal del Amor 💖
+    Bienvenida a la Terminal del Amor 💘
     Escribe un comando para comenzar. Escribe "help" para ver las opciones.
     <br><br>
   </div>
   <div id="input-line">
-    <span id="prompt">&gt;</span>
+    <span>&gt;</span>
     <input type="text" id="cmdInput" autofocus />
   </div>
 
   <script>
+    const PASSWORD = "tusecretito"; // <--- Cambia esto por la contraseña que solo ella sepa
+
+    function checkPass() {
+      const input = document.getElementById("pass").value;
+      if (input === PASSWORD) {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("terminal").style.display = "block";
+        document.getElementById("input-line").style.display = "flex";
+        document.getElementById("cmdInput").focus();
+      } else {
+        alert("Contraseña incorrecta 💔");
+      }
+    }
+
+    // Terminal interactividad
     const terminal = document.getElementById("terminal");
     const input = document.getElementById("cmdInput");
 
@@ -91,9 +114,5 @@ Imposible. Sentimientos activos para siempre. 💘`,
       }
     });
   </script>
-
-  <!-- 🐣 Mensaje oculto para curiosas:
-  Si estás leyendo esto es porque inspeccionaste el código. 
-  Eso ya te hace aún más increíble. Te amo 💻💖 -->
 </body>
 </html>
