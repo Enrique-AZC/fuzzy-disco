@@ -11,140 +11,166 @@
       padding: 20px;
       margin: 0;
     }
-    #login {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
+
+    #terminal, #input-line {
+      display: none;
+      max-width: 800px;
+      margin: auto;
+      white-space: pre-wrap;
     }
-    input[type="password"] {
-      background: #111;
+
+    #login {
+      text-align: center;
+      margin-top: 25vh;
+      color: #00ffcc;
+    }
+
+    #login input[type="password"] {
+      background: #000;
       color: #00ffcc;
       border: 1px solid #00ffcc;
-      font-family: inherit;
       padding: 10px;
       font-size: 1em;
-      width: 300px;
-      margin-top: 10px;
+      width: 250px;
+      font-family: 'Courier New', monospace;
     }
+
+    #login h2 {
+      margin-bottom: 20px;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     button {
-      padding: 10px 20px;
       margin-top: 10px;
+      padding: 8px 16px;
       font-size: 1em;
       background-color: #00ffcc;
       color: black;
       border: none;
       cursor: pointer;
+      font-family: 'Courier New', monospace;
     }
-    #terminal {
-      white-space: pre-wrap;
-    }
-    #input-line {
+
+    #prompt-line {
       display: flex;
       align-items: center;
-      gap: 5px;
-      margin-top: 10px;
     }
-    #cmdInput {
-      background: #000;
-      color: #00ffcc;
+
+    #prompt {
+      margin-right: 6px;
+    }
+
+    input[type="text"] {
+      background: transparent;
       border: none;
       outline: none;
+      color: #00ffcc;
       font-family: inherit;
       font-size: 1em;
-      width: 80%;
+      width: 100%;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      background-color: #00ffcc;
+      margin-left: 2px;
+      animation: blink 1s steps(2, start) infinite;
+    }
+
+    @keyframes blink {
+      to {
+        visibility: hidden;
+      }
     }
   </style>
 </head>
 <body>
-
-  <!-- Pantalla de login -->
   <div id="login">
-    <h2>Ingresa la contraseña<br>(pista: Curro debería comprarse una calculadora)</h2>
+    <h2>Ingresa la contraseña (pista: Curro debería comprarse una calculadora)</h2>
     <input type="password" id="pass" placeholder="Escríbela aquí">
+    <br>
     <button onclick="checkPass()">Entrar</button>
   </div>
 
-  <!-- Terminal principal -->
-  <div id="main" style="display: none;">
-    <div id="terminal">
-      Jorge el Portugués, bienvenido a la terminal chulandrona  
-      Escribe un comando para comenzar. Escribe "help" para ver las opciones.
-    </div>
-    <div id="input-line">
-      <span>&gt;</span>
-      <input type="text" id="cmdInput" autofocus />
+  <div id="terminal">
+    Jorge el Portugués, bienvenido a la terminal chulandrona  
+    Escribe un comando para comenzar. Escribe "help" para ver las opciones.
+    <br><br>
+  </div>
+
+  <div id="input-line">
+    <div id="prompt-line">
+      <span id="prompt">&gt;</span>
+      <input type="text" id="cmdInput" autocomplete="off" autofocus />
+      <span class="cursor"></span>
     </div>
   </div>
 
   <script>
     const PASSWORD = "5-(-1)";
-    const login = document.getElementById("login");
-    const main = document.getElementById("main");
-    const terminal = document.getElementById("terminal");
-    const input = document.getElementById("cmdInput");
 
     function checkPass() {
       const inputPass = document.getElementById("pass").value;
       if (inputPass === PASSWORD) {
-        login.style.display = "none";
-        main.style.display = "block";
-        input.focus();
+        document.getElementById("login").style.display = "none";
+        document.getElementById("terminal").style.display = "block";
+        document.getElementById("input-line").style.display = "block";
+        document.getElementById("cmdInput").focus();
       } else {
-        alert("Contraseña incorrecta, llamando a Jose María...");
+        alert("Contraseña incorrecta, llamando a Jose María.");
       }
     }
 
-    const commands = {
-      help: `Comandos disponibles:
-  - ./start → Iniciar la experiencia
-  - ./razones → Mostrar razones por las que te amo
-  - ./teamo → Ver cuánto te amo
-  - ./fin → Final simbólico
-  - clear → Limpiar pantalla`,
+    const terminal = document.getElementById("terminal");
+    const input = document.getElementById("cmdInput");
 
+    const commands = {
+      help: `Comandos disponibles (work in progress):
+  ./start   → Iniciar la experiencia
+  ./razones → Mostrar razones por las que te amo
+  ./teamo   → Ver cuánto te amo
+  ./fin     → Final simbólico
+  clear     → Limpiar pantalla`,
       "./start": `Iniciando sentimientos...
 Cargando recuerdos... ██████████ 100%
-Listo para expresar lo que siento por ti ❤️
-
-📁 Abriendo recuerdos compartidos:
-👉 https://recuerdos.vercel.app
-`,
-
+Listo para expresar lo que siento por ti ❤️`,
       "./razones": `1. Porque tu risa ilumina todo.
 2. Porque contigo soy yo, sin filtros.
 3. Porque haces que los días normales se sientan mágicos.
 4. Porque te amo sin razón, y con todas las razones del mundo.`,
-
-      "./teamo": `Te amo más que a las tazas de café en días lluviosos, más que al código que compila a la primera.
+      "./teamo": `Te amo más que a las tazas de café en días lluviosos,
+más que al código que compila a la primera.
 Y eso... es muchísimo. 💻❤️`,
-
       "./fin": `Error: El amor no tiene fin.
 Intentando cerrar sesión...
 Imposible. Sentimientos activos para siempre. 💘`,
-
       clear: "clear"
     };
 
     input.addEventListener("keydown", function(e) {
       if (e.key === "Enter") {
         const cmd = input.value.trim();
-        terminal.innerHTML += `\n> ${cmd}\n`;
+        appendToTerminal("> " + cmd);
         if (commands[cmd]) {
           if (cmd === "clear") {
             terminal.innerHTML = "";
           } else {
-            terminal.innerHTML += commands[cmd] + "\n";
+            appendToTerminal(commands[cmd]);
           }
         } else {
-          terminal.innerHTML += "Comando no reconocido. Escribe 'help' para ver los disponibles.\n";
+          appendToTerminal("Comando no reconocido. Escribe 'help' para ver los disponibles.");
         }
         input.value = "";
         window.scrollTo(0, document.body.scrollHeight);
       }
     });
+
+    function appendToTerminal(text) {
+      terminal.innerHTML += text + "<br><br>";
+    }
   </script>
 </body>
 </html>
