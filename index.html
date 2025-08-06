@@ -22,17 +22,24 @@
     #login {
       text-align: center;
       margin-top: 25vh;
+      color: #00ffcc;
     }
 
-    input[type="password"],
-    input[type="text"] {
-      background: transparent;
-      border: none;
-      outline: none;
+    #login input[type="password"] {
+      background: #000;
       color: #00ffcc;
-      font-family: inherit;
+      border: 1px solid #00ffcc;
+      padding: 10px;
       font-size: 1em;
-      width: 100%;
+      width: 250px;
+      font-family: 'Courier New', monospace;
+    }
+
+    #login h2 {
+      margin-bottom: 20px;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     button {
@@ -43,6 +50,7 @@
       color: black;
       border: none;
       cursor: pointer;
+      font-family: 'Courier New', monospace;
     }
 
     #prompt-line {
@@ -52,6 +60,16 @@
 
     #prompt {
       margin-right: 6px;
+    }
+
+    input[type="text"] {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #00ffcc;
+      font-family: inherit;
+      font-size: 1em;
+      width: 100%;
     }
 
     .cursor {
