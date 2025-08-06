@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Terminal del Amor</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ffcc;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+      overflow: hidden;
+    }
+    #terminal {
+      max-width: 800px;
+      margin: 0 auto;
+      white-space: pre-wrap;
+    }
+    #input-line {
+      display: flex;
+    }
+    #prompt {
+      margin-right: 10px;
+    }
+    input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #00ffcc;
+      font-family: inherit;
+      width: 100%;
+    }
+    ::selection {
+      background: #00ffcc;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal">
+    Bienvenida a la Terminal del Amor 💖
+    Escribe un comando para comenzar. Escribe "help" para ver las opciones.
+    <br><br>
+  </div>
+  <div id="input-line">
+    <span id="prompt">&gt;</span>
+    <input type="text" id="cmdInput" autofocus />
+  </div>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+    const input = document.getElementById("cmdInput");
+
+    const commands = {
+      help: `Comandos disponibles:
+  - ./start → Iniciar la experiencia
+  - ./razones → Mostrar razones por las que te amo
+  - ./teamo → Ver cuánto te amo
+  - ./fin → Final simbólico
+  - clear → Limpiar pantalla`,
+      "./start": `Iniciando sentimientos...
+Cargando recuerdos... ██████████ 100%
+Listo para expresar lo que siento por ti ❤️`,
+      "./razones": `1. Porque tu risa ilumina todo.
+2. Porque contigo soy yo, sin filtros.
+3. Porque haces que los días normales se sientan mágicos.
+4. Porque te amo sin razón, y con todas las razones del mundo.`,
+      "./teamo": `Te amo más que a las tazas de café en días lluviosos, más que al código que compila a la primera.
+Y eso... es muchísimo. 💻❤️`,
+      "./fin": `Error: El amor no tiene fin.
+Intentando cerrar sesión...
+Imposible. Sentimientos activos para siempre. 💘`,
+      clear: "clear"
+    };
+
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        const cmd = input.value.trim();
+        terminal.innerHTML += `\n> ${cmd}\n`;
+        if (commands[cmd]) {
+          if (cmd === "clear") {
+            terminal.innerHTML = "";
+          } else {
+            terminal.innerHTML += commands[cmd] + "\n";
+          }
+        } else {
+          terminal.innerHTML += "Comando no reconocido. Escribe 'help' para ver los disponibles.\n";
+        }
+        input.value = "";
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+    });
+  </script>
+
+  <!-- 🐣 Mensaje oculto para curiosas:
+  Si estás leyendo esto es porque inspeccionaste el código. 
+  Eso ya te hace aún más increíble. Te amo 💻💖 -->
+</body>
+</html>
